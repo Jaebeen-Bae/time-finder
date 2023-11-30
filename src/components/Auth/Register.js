@@ -11,6 +11,7 @@ import {
 import { Link } from 'react-router-dom'
 import md5 from 'md5'
 import firebase from '../../firebase'
+import LOGO from '../../images/about/time-finder.png'
 
 export default function Register() {
   const initialState = {
@@ -36,11 +37,11 @@ export default function Register() {
     let errors = []
     let error
     if (isFormEmpty(registerUserState)) {
-      error = { message: 'Please fill in all the fields' }
+      error = { message: '모든 항목을 작성해주세요.' }
       setErrors(errors.concat(error))
       return false
     } else if (!isPasswordValid(registerUserState)) {
-      error = { message: 'Password is invalid' }
+      error = { message: '비밀번호가 일치하지 않습니다.' }
       setErrors(errors.concat(error))
       return false
     } else {
@@ -111,21 +112,23 @@ export default function Register() {
   const { userName, email, password, confirmPassword } = registerUserState
 
   return (
-    <Grid textAlign="center" verticalAlign="middle" className="app">
-      <Grid.Column style={{ maxWidth: 450 }}>
-        <Header as="h2" color="purple" textAlign="center">
-          <Icon name="puzzle piece" color="purple" />
-          Register for slack clone!!
-        </Header>
+    <div className="app auth">
+      <div>
+        <a href="/">
+          <img src={LOGO} width="50%"/>
+        </a>
+        <h1>
+          <strong>타임파인더</strong>
+        </h1>
         <Form size="large" onSubmit={onSubmit}>
-          <Segment stacked>
+          <Segment className="loginBox">
             <Form.Input
               fluid
               type="text"
               name="userName"
               icon="user"
               iconPosition="left"
-              placeholder="User Name"
+              placeholder="이름"
               value={userName}
               onChange={handleChange}
               className={handleInputError(errors, 'userName')}
@@ -136,7 +139,7 @@ export default function Register() {
               name="email"
               icon="mail"
               iconPosition="left"
-              placeholder="Email"
+              placeholder="이메일"
               value={email}
               onChange={handleChange}
               className={handleInputError(errors, 'email')}
@@ -147,7 +150,7 @@ export default function Register() {
               name="password"
               icon="lock"
               iconPosition="left"
-              placeholder="Password"
+              placeholder="비밀번호"
               value={password}
               onChange={handleChange}
               className={handleInputError(errors, 'password')}
@@ -158,7 +161,7 @@ export default function Register() {
               name="confirmPassword"
               icon="redo"
               iconPosition="left"
-              placeholder="Confirm Password"
+              placeholder="비밀번호 재확인"
               value={confirmPassword}
               onChange={handleChange}
               className={handleInputError(errors, 'password')}
@@ -168,11 +171,17 @@ export default function Register() {
               className={status === 'PENDING' ? 'loading' : ''}
               type="submit"
               fluid
-              color="purple"
+              className="blue mgb-14"
               size="large"
             >
-              Submit
+              확인
             </Button>
+            <div className="find">
+              <Link to="/Login">
+                <Icon name="home"/>
+                HOME
+              </Link>
+            </div>
           </Segment>
         </Form>
         {errors.length > 0 &&
@@ -181,10 +190,7 @@ export default function Register() {
               <p>{err.message}</p>
             </Message>
           ))}
-        <Message>
-          Already have an account? <Link to="/login">Login</Link>{' '}
-        </Message>
-      </Grid.Column>
-    </Grid>
+      </div>
+    </div>
   )
 }

@@ -6,11 +6,10 @@ import {
   Button,
   Header,
   Message,
-  Icon,
 } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import firebase from '../../firebase'
-
+import LOGO from '../../images/about/time-finder.png'
 export default function Login() {
   const initialState = {
     email: '',
@@ -34,7 +33,7 @@ export default function Login() {
     if (formIsValid(loginUserState)) {
       const { email, password } = loginUserState
       setErrors(errors)
-      setStatus('PENDING!')
+      setStatus('PENDING')
 
       try {
         await firebase.auth().signInWithEmailAndPassword(email, password)
@@ -44,7 +43,7 @@ export default function Login() {
         setErrors(errors.concat({ message: err.message }))
       }
     } else {
-      let error = { message: 'Please fill the form' }
+      let error = { message: '이메일과 비밀번호를 입력해주세요.' }
       setErrors(errors.concat(error))
     }
   }
@@ -64,28 +63,23 @@ export default function Login() {
   const { email, password } = loginUserState
 
   return (
-    <div className="fontSetting">
-    <Grid textAlign="center" verticalAlign="middle" className="app">
-      <Grid.Row style={{ maxWidth: 600, alignContent: "flex-end" }}>
-        <Grid.Column style={{ width: "75%" }}>
-          <Header as="h1" textAlign="center">
-            스케줄 관리를 더 편하고 더 즐겁게,
-            <br/>
-            <strong>타임파인더</strong>
-          </Header>
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row style={{ alignContent: "flex-start" }}>
-        <Grid.Column style={{ maxWidth: 600 }}>
+    <div className="app auth">
+      <div>
+        <a href="/">
+          <img src={LOGO} width="50%"/>
+        </a>
+        <h1>
+          <strong>타임파인더</strong>
+        </h1>
         <Form size="large" onSubmit={onSubmit}>
-          <Segment>
+          <Segment className="loginBox">
             <Form.Input
               fluid
               type="email"
               name="email"
               icon="mail"
               iconPosition="left"
-              placeholder="Email"
+              placeholder="이메일"
               value={email}
               onChange={handleChange}
               className={handleInputError(errors, 'email')}
@@ -96,7 +90,7 @@ export default function Login() {
               name="password"
               icon="lock"
               iconPosition="left"
-              placeholder="Password"
+              placeholder="비밀번호"
               value={password}
               onChange={handleChange}
               className={handleInputError(errors, 'password')}
@@ -107,22 +101,21 @@ export default function Login() {
               type="submit"
               fluid
               size="large"
-              style={{marginBottom: "14px"}}
+              className="loginButton mgb-14"
             >
               로그인
             </Button>
             <Link to="/register">
-            <Button
-              disabled={status === 'PENDING'}
-              className={status === 'PENDING' ? 'loading' : ''}
-              type="register"
-              fluid
-              size="large"
-              color="red"
-              style={{marginBottom: "14px"}}
-            >
-              타임파인더 회원가입
-            </Button>
+              <Button
+                disabled={status === 'PENDING'}
+                className={status === 'PENDING' ? 'loading' : ''}
+                type="register"
+                fluid
+                size="large"
+                className="blue mgb-14"
+              >
+                타임파인더 회원가입
+              </Button>
             </Link>
             <div className="find">
               <a>
@@ -137,9 +130,7 @@ export default function Login() {
               <p>{err.message}</p>
             </Message>
           ))}
-      </Grid.Column>
-      </Grid.Row>
-    </Grid>
+      </div>
     </div>
   )
 }
